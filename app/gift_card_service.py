@@ -28,5 +28,9 @@ class GiftCardService:
     def redeem(self, code: str, amount_cents: int) -> GiftCard:
         """Spend amount_cents from the card. Returns the updated card."""
         card = self.get(code)
+        if amount_cents > card.balance_cents:
+            raise ValidationError("not enough balance")
+        if amount_cents <= 0:
+            raise ValidationError("amount must be positive")
         card.balance_cents -= amount_cents
         return card
