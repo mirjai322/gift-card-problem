@@ -1,4 +1,4 @@
-# Problem 00 (warm-up): Gift Cards
+# Problem 00: Gift Cards
 
 A tiny codebase (4 files) to warm up before Problem 01. Three short parts,
 one per day, about 25–30 min each.
