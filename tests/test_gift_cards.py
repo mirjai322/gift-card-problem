@@ -3,6 +3,9 @@ import pytest
 from app.errors import NotFoundError, ValidationError
 from app.gift_card_service import GiftCardService
 
+from datetime import datetime, timedelta, timezone
+
+
 
 @pytest.fixture
 def service():
@@ -42,3 +45,10 @@ def test_cannot_redeem_more_than_balance(service):
     with pytest.raises(ValidationError):
         service.redeem("WELCOME25", 3_000)
     assert service.get("WELCOME25").balance_cents == 2_500
+
+def test_expired_card_cannot_be_redeemed():
+    service = GiftCardService()
+    past = datetime.now(timezone.utc) - timedelta(hours=1)
+    service.issue("OLD", 1000, expires_at=past)
+    with pytest.raises(ValidationError):
+        service.redeem("OLD", 100)
